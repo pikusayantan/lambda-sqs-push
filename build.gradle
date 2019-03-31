@@ -1,0 +1,28 @@
+group 'com.sayantan.lambda.push'
+version = '0.1.0'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+dependencies {
+    compile("org.apache.commons:commons-lang3:3.5") 
+    compile("com.amazonaws:aws-lambda-java-core:1.2.0") 
+    compile("com.amazonaws:aws-lambda-java-events:2.2.6") 
+    compile("com.amazonaws:aws-java-sdk-sqs:1.11.529") 
+
+}
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    // configuration that holds jars to include in the jar
+    compile
+}
+
+jar {
+       // Include all of the jars from the bundled configuration in our jar
+       from configurations.compile.asFileTree.files.collect { zipTree(it) }
+   }
