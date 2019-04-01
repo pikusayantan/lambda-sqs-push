@@ -1,18 +1,22 @@
 package com.sayantan.lambda.push;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent.SQSMessage;
+import com.sayantan.lambda.push.exception.AccountAlreadyExistsException;
 
-public class AppPull implements RequestHandler<SQSEvent, Void> {
+public class AppPull {
 
-	@Override
-	public Void handleRequest(SQSEvent event, Context context) {
+	public static Void handleRequest(SQSEvent event, Context context) throws AccountAlreadyExistsException{
 		
-        System.out.println();
+        System.out.println("Starting sqs pull...........");
         for(SQSMessage msg : event.getRecords()){
-            System.out.println(msg.getBody());
+        	String message = msg.getBody(); 
+            System.out.println(message);
+            if(message.contains("dlq")) {
+            	System.out.println("exception will be thrown");
+            	throw new AccountAlreadyExistsException("dlp found");
+            }
         }
 		
 		return null;

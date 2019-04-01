@@ -7,11 +7,12 @@ import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sayantan.lambda.push.model.Input;
 
 public class Application implements RequestHandler<Input, String> {
 
 //	@Override
-	public String handleRequest(Input input, Context context){
+	public String handleRequest(Input input, Context context) {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		
@@ -22,7 +23,6 @@ public class Application implements RequestHandler<Input, String> {
 		try {
 			sqs.sendMessage(new SendMessageRequest(queue_url, mapper.writeValueAsString(input)));
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
